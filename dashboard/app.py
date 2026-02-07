@@ -1,5 +1,6 @@
 import streamlit as st
 import requests
+import os
 
 # ---------------------------
 # Page config
@@ -20,11 +21,10 @@ st.info(
     "Random or zeroed PCA inputs may produce extreme risk scores."
 )
 
-import os
-
+# ---------------------------
+# API endpoint
+# ---------------------------
 API_URL = "https://fraud-detection-system-2-7ake.onrender.com/predict_fraud"
-
-
 
 # ---------------------------
 # Input form
@@ -70,30 +70,41 @@ if submit:
             risk = result["risk_level"]
             prob = float(result["fraud_probability"])
 
+            # ---------------------------
+            # Business decision mapping
+            # ---------------------------
+            if risk == "HIGH RISK":
+                decision = "BLOCK"
+            elif risk == "MEDIUM RISK":
+                decision = "REVIEW"
+            else:
+                decision = "ALLOW"
+
             st.divider()
             st.subheader("🔍 Fraud Assessment Result")
 
             # Probability bar (visual intuition)
             st.progress(min(prob, 1.0))
 
-            col1, col2 = st.columns(2)
+            col1, col2, col3 = st.columns(3)
             col1.metric("Fraud Probability", f"{prob:.2f}")
             col2.metric("Risk Level", risk)
+            col3.metric("Final Decision", decision)
 
-            if risk == "HIGH RISK":
+            if decision == "BLOCK":
                 st.error(
                     "🚨 **HIGH RISK TRANSACTION**\n\n"
-                    "Immediate action recommended."
+                    "Transaction should be blocked immediately."
                 )
-            elif risk == "MEDIUM RISK":
+            elif decision == "REVIEW":
                 st.warning(
                     "⚠️ **MEDIUM RISK TRANSACTION**\n\n"
-                    "Manual review suggested."
+                    "Manual review or step-up authentication recommended."
                 )
             else:
                 st.success(
                     "✅ **LOW RISK TRANSACTION**\n\n"
-                    "Transaction appears safe."
+                    "Transaction can be safely allowed."
                 )
 
             st.caption(
@@ -105,6 +116,9 @@ if submit:
         st.error("❌ API call failed.")
         st.write(e)
 
+# ---------------------------
+# Footer
+# ---------------------------
 st.markdown("---")
 st.caption("v1.0 • Portfolio Demonstration Project")
 st.caption("Built by Akash M S")
