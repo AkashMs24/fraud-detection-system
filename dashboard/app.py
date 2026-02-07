@@ -104,3 +104,7 @@ if submit:
     except Exception as e:
         st.error("❌ API call failed.")
         st.write(e)
+
+st.markdown("---")
+st.caption("v1.0 • Portfolio Demonstration Project")
+st.caption("Built by Akash M S")
