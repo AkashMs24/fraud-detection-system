@@ -10,8 +10,7 @@ st.set_page_config(
     layout="centered"
 )
 
-st.title("💳 Cost-Sensitive-Real-Time-Fraud-Detection-Decision-System
-")
+st.title("💳Cost-Sensitive-Real-Time-Fraud-Detection-Decision-System")
 st.write("Enter transaction details to assess fraud risk in real time.")
 
 # ---------------------------
