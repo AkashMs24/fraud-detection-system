@@ -2,7 +2,8 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 import numpy as np
 
-app = FastAPI(title="Fraud Detection API")
+app = FastAPI(title="Cost-Sensitive-Real-Time-Fraud-Detection-Decision-System
+ API")
 
 class Transaction(BaseModel):
     Time: float
